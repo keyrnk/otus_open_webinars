@@ -4,13 +4,13 @@
 #include <functional>
 #include <memory>
 
-template <typename T>
+template <typename T, typename Deleter = std::default_delete<T>>
 class unique_ptr {
     T *ptr;
-
+    Deleter d;
   public:
     unique_ptr(T *ptr_) : ptr{ptr_} {}
-    ~unique_ptr() { delete ptr; }
+    ~unique_ptr() { d(ptr); }
 
     unique_ptr(const unique_ptr<T> &) = delete;
     unique_ptr<T> &operator=(const unique_ptr<T> &) = delete;

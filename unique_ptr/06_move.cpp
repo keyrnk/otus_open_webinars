@@ -24,9 +24,20 @@ public:
         }
     }
     // конструктор копирования
-    Message(const Message& copy) : Message{copy.text, copy.size }  // обращаемся к стандартному конструктору
+    Message(const Message& copy) 
+        : Message{copy.text, copy.size }  // обращаемся к стандартному конструктору
     {
         std::cout << "Message copy ctor" << std::endl;
+    }
+
+    //перемещающий конструктор
+    Message(Message&& msg)
+        : text(msg.text)
+        , size(msg.size)
+    {
+        std::cout << "Message move ctor" << std::endl;
+        msg.text = nullptr;
+        msg.size = 0;
     }
      
     // деструктор
@@ -45,8 +56,8 @@ public:
 class Messenger
 {
 public:
-    Messenger(const Message& mes)
-        : message(mes)
+    Messenger(Message mes)
+        : message(std::move(mes))
     { }
     void SendMessage() const
     {
@@ -61,7 +72,7 @@ void MessageTest()
     Message msg{"Hello Word", 11};
     std::cout << "message " << msg.GetText() << std::endl;
 
-    Messenger messenger(msg);
+    Messenger messenger(std::move(msg));
     messenger.SendMessage();
 
     //std::cout << "message " << msg.GetText() << std::endl;
