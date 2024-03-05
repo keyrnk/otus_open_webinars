@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+if(WIN32)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    set(BUILD_SHARED_LIBS TRUE)     
+endif()
+
 add_subdirectory(dynamic_library)
 
 add_executable(dynamic_library_usage
